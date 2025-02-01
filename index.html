@@ -9,13 +9,13 @@
 </head>
 <body class="bg-gray-50">
     <!-- Barre de navigation -->
-    <nav class="bg-blue-600 shadow-md p-4">
+    <nav class="bg-gradient-to-r from-orange-500 via-white to-green-500 shadow-md p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-white">ArtisanCI</h1>
+            <h1 class="text-2xl font-bold text-black">ArtisanCI</h1>
             <div>
-                <a href="acceuil.html" class="text-white hover:text-blue-100 mx-2">Accueil</a>
-                <a href="dashboard_artisan.html" class="text-white hover:text-blue-100 mx-2">Tableau de bord</a>
-                <a href="#" id="logout" class="text-white hover:text-blue-100 mx-2">Déconnexion</a>
+                <a href="index.html" class="text-black hover:text-gray-700 mx-2">Accueil</a>
+                <a href="dashboard_artisan.html" class="text-black hover:text-gray-700 mx-2">Tableau de bord</a>
+                <a href="#" id="logout" class="text-black hover:text-gray-700 mx-2">Déconnexion</a>
             </div>
         </div>
     </nav>
@@ -38,12 +38,12 @@
                     {
                         title: "Table basse en chêne",
                         description: "Table basse en chêne massif avec finition à l'huile naturelle.",
-                        image: "images/Table.webp" // Chemin de l'image
+                        image: "images/Table.webp"
                     },
                     {
                         title: "Armoire en bois",
                         description: "Armoire en bois massif avec portes coulissantes.",
-                        image: "images/armoire.jpg" // Chemin de l'image
+                        image: "images/armoire.jpg"
                     }
                 ]
             },
@@ -54,7 +54,7 @@
                     {
                         title: "Installation de salle de bain",
                         description: "Installation complète d'une salle de bain moderne.",
-                        image: "images/douche-1.png" // Chemin de l'image
+                        image: "images/douche-1.png"
                     }
                 ]
             },
@@ -64,19 +64,19 @@
                 realisations: [
                     {
                         title: "Maintenance",
-                        description: "Reglage de tout sorte de probleme concernant l'electricité",
-                        image: "images/electricien.webp" // Chemin de l'image (ajoutez l'extension correcte)
+                        description: "Réglage de tout type de problème électrique.",
+                        image: "images/electricien.webp"
                     }
                 ]
             },
             {
                 name: "Kone Salim",
-                domaine: "peintre",
+                domaine: "Peinture",
                 realisations: [
                     {
                         title: "Excellent peintre",
-                        description: "Present pour apporter vie a votre maison a travers mon art.",
-                        image: "images/peinture.jpeg" // Chemin de l'image
+                        description: "Apporte de la vie à votre maison à travers mon art.",
+                        image: "images/peinture.jpeg"
                     }
                 ]
             }
@@ -84,14 +84,11 @@
 
         // Fonction pour générer le catalogue
         function genererCatalogue() {
-            const catalogue = document.getElementById('catalogue'); // Sélectionne la section du catalogue
-            catalogue.innerHTML = ''; // Vide le contenu existant
+            const catalogue = document.getElementById('catalogue');
+            catalogue.innerHTML = '';
 
-            // Parcourir chaque artisan
             artisans.forEach(artisan => {
-                // Parcourir chaque réalisation de l'artisan
                 artisan.realisations.forEach(realisation => {
-                    // Créer une carte pour chaque réalisation
                     const card = `
                         <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                             <img src="${realisation.image}" alt="${realisation.title}" class="w-full h-48 object-cover">
@@ -107,7 +104,7 @@
                             </div>
                         </div>
                     `;
-                    catalogue.innerHTML += card; // Ajouter la carte au catalogue
+                    catalogue.innerHTML += card;
                 });
             });
         }
@@ -117,9 +114,9 @@
             const user = JSON.parse(localStorage.getItem('user'));
 
             if (!user || user.userType !== 'artisan') {
-                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+                window.location.href = 'register.html';
             } else {
-                genererCatalogue(); // Générer le catalogue une fois la page chargée
+                genererCatalogue();
             }
         });
 

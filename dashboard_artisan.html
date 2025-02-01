@@ -73,6 +73,14 @@
         .fc-event:hover {
             background: #2563eb !important;
         }
+        .header-gradient {
+    background: linear-gradient(to right, #ff7f00, #ffffff, #00a650);
+}
+
+.header-gradient a {
+    color: black !important; /* Change la couleur du texte en noir */
+    font-weight: bold; /* Optionnel : rendre le texte plus lisible */
+}
     </style>
 </head>
 <body class="bg-gray-50">
@@ -89,7 +97,7 @@
                         <a href="#calendar" class="text-white hover:text-blue-100">Agenda</a>
                         <a href="#profile" class="text-white hover:text-blue-100">Profil</a>
                         <a href="#settings" class="text-white hover:text-blue-100">Paramètres</a>
-                        <a href="acceuil.html" class="text-white hover:text-blue-100">Accueil</a>
+                        <a href="index.html" class="text-white hover:text-blue-100">Accueil</a>
                     </nav>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -363,8 +371,8 @@
             link.addEventListener('click', function(e) {
                 const targetHref = this.getAttribute('href');
 
-                // Si le lien est "acceuil.html", laisser le navigateur suivre le lien
-                if (targetHref === 'acceuil.html') {
+                // Si le lien est "index.html", laisser le navigateur suivre le lien
+                if (targetHref === 'index.html') {
                     return; // Ne pas empêcher le comportement par défaut
                 }
 

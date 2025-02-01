@@ -15,7 +15,7 @@
             transform: translateY(-8px);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
-
+    
         .filter-btn {
             background: white;
             border: 2px solid #3b82f6;
@@ -24,12 +24,36 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
-
+    
         .filter-btn:hover {
             background: #3b82f6;
             color: white;
         }
+        
+        /* Barre de navigation avec dégradé orange-blanc-vert */
+        nav {
+            background: linear-gradient(135deg, #ff8c00, #ffffff, #32cd32); /* Dégradé orange-blanc-vert */
+            padding: 1rem;
+        }
+        
+        nav h1 {
+            font-size: 2rem;
+            color: black;
+        }
+        
+        nav a {
+            font-weight: bold;
+            color: black; /* Texte des liens en noir */
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: #ff8c00; /* Couleur de survol orange */
+        }
     </style>
+    
 </head>
 <body class="bg-gray-100">
     <!-- Barre de navigation -->
