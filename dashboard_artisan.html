@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - ArtisanCI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <style>
+        .sidebar {
+            height: calc(100vh - 4rem);
+            position: sticky;
+            top: 4rem;
+        }
+        
+        .main-content {
+            min-height: calc(100vh - 4rem);
+        }
+        
+        .header-gradient {
+            background: linear-gradient(to right, #1e40af, #3b82f6);
+        }
+        
+        .post-card {
+            transition: transform 0.2s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .active-nav-item {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* Style personnalisé pour le calendrier */
+        .fc {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .fc-header-toolbar {
+            padding: 1rem;
+            background: #f9fafb;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .fc-button {
+            background: #3b82f6 !important;
+            border: none !important;
+            color: white !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 0.375rem !important;
+            transition: background 0.2s ease;
+        }
+
+        .fc-button:hover {
+            background: #2563eb !important;
+        }
+
+        .fc-event {
+            background: #3b82f6 !important;
+            border: none !important;
+            padding: 0.25rem 0.5rem !important;
+            border-radius: 0.25rem !important;
+            cursor: pointer;
+        }
+
+        .fc-event:hover {
+            background: #2563eb !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header fixe -->
+    <header class="header-gradient fixed w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <span class="text-2xl font-bold text-white">ArtisanCI</span>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#dashboard" class="text-white hover:text-blue-100">Tableau de bord</a>
+                        <a href="#posts" class="text-white hover:text-blue-100">Mes réalisations</a>
+                        <a href="#messages" class="text-white hover:text-blue-100">Messages</a>
+                        <a href="#calendar" class="text-white hover:text-blue-100">Agenda</a>
+                        <a href="#profile" class="text-white hover:text-blue-100">Profil</a>
+                        <a href="#settings" class="text-white hover:text-blue-100">Paramètres</a>
+                        <a href="acceuil.html" class="text-white hover:text-blue-100">Accueil</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="relative">
+                        <i class="fas fa-bell text-white text-xl"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-white">Colonel Watao</span>
+                        <img src="images/watta.jpeg" alt="Profile" class="h-10 w-10 rounded-full border-2 border-white">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg hidden md:block sidebar overflow-y-auto">
+            <nav class="p-4 space-y-2">
+                <a href="#dashboard" class="flex items-center space-x-3 p-3 rounded-lg active-nav-item">
+                    <i class="fas fa-home text-blue-600"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#posts" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-hammer text-gray-600"></i>
+                    <span>Mes réalisations</span>
+                </a>
+                <a href="#messages" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-comments text-gray-600"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#calendar" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-calendar text-gray-600"></i>
+                    <span>Agenda</span>
+                </a>
+                <a href="#profile" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-user text-gray-600"></i>
+                    <span>Profil</span>
+                </a>
+                <a href="#settings" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-cog text-gray-600"></i>
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="flex-1 p-6 main-content">
+            <!-- Section Tableau de Bord -->
+            <div id="dashboard">
+                <h2 class="text-xl font-semibold mb-4">Tableau de Bord</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Vues du profil</p>
+                                <p class="text-2xl font-bold">1,234</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-eye text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Messages</p>
+                                <p class="text-2xl font-bold">18</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-envelope text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Projets</p>
+                                <p class="text-2xl font-bold">47</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-briefcase text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Note moyenne</p>
+                                <p class="text-2xl font-bold">4.8</p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <i class="fas fa-star text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Mes Réalisations -->
+            <div id="posts">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Mes Réalisations</h2>
+                    <!-- Bouton pour faire une publication -->
+                    <button id="openModal" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                        Faire une publication
+                    </button>
+                </div>
+                <div id="postsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Les publications seront ajoutées ici dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Modal pour la publication -->
+            <div id="publicationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white rounded-lg p-6 w-1/3">
+                    <h2 class="text-xl font-semibold mb-4">Nouvelle Publication</h2>
+                    <form id="publicationForm">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                            <input type="text" id="postTitle" class="w-full p-2 border rounded-lg" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea id="postDescription" class="w-full p-2 border rounded-lg" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                            <input type="file" id="postImage" class="w-full p-2 border rounded-lg" accept="image/*" required>
+                        </div>
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                                Publier
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Section Messages -->
+            <div id="messages" class="hidden">
+                <h2 class="text-xl font-semibold mb-4">Messages</h2>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="space-y-4">
+                        <!-- Message 1 -->
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Traore Rice Aliman</h3>
+                                <span class="text-sm text-gray-500">10:30 AM</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Bonjour, je suis intéressé par votre travail. Pouvez-vous me donner un devis ?</p>
+                            <button class="mt-2 text-blue-600 hover:text-blue-700">Répondre</button>
+                        </div>
+
+                        <!-- Message 2 -->
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Adamou Shafahatou</h3>
+                                <span class="text-sm text-gray-500">Hier</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Bonjour, j'aimerais discuter d'un projet de menuiserie. Êtes-vous disponible cette semaine ?</p>
+                            <button class="mt-2 text-blue-600 hover:text-blue-700">Répondre</button>
+                        </div>
+
+                        <!-- Message 3 -->
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Ayekpa Grace</h3>
+                                <span class="text-sm text-gray-500">Il y a 3j</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Bonjour, j'ai vu votre réalisation de table basse. Pouvez-vous faire quelque chose de similaire pour moi ?</p>
+                            <button class="mt-2 text-blue-600 hover:text-blue-700">Répondre</button>
+                        </div>
+
+                        <!-- Message 4 -->
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Kamagate Sali</h3>
+                                <span class="text-sm text-gray-500">Il y a 5j</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Bonjour, j'aimerais prendre rendez-vous pour discuter d'un projet de rénovation.</p>
+                            <button class="mt-2 text-blue-600 hover:text-blue-700">Répondre</button>
+                        </div>
+
+                        <!-- Message 5 -->
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Non Carine</h3>
+                                <span class="text-sm text-gray-500">Il y a 1 semaine</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Bonjour, j'ai besoin d'un artisan pour un projet de plomberie. Êtes-vous disponible ?</p>
+                            <button class="mt-2 text-blue-600 hover:text-blue-700">Répondre</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Agenda -->
+    <div id="calendar">
+        <h2 class="text-xl font-semibold mb-4">Agenda</h2>
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div id="calendar-container"></div>
+        </div>
+    </div>
+
+            <!-- Section Profil -->
+            <div id="profile" class="hidden">
+                <h2 class="text-xl font-semibold mb-4">Profil</h2>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <form>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" value="Jean Dupont">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" class="w-full p-2 border rounded-lg" value="jean.dupont@example.com">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+                            <input type="tel" class="w-full p-2 border rounded-lg" value="+33 6 12 34 56 78">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Localité</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" value="Abidjan">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                            Enregistrer les modifications
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Section Paramètres -->
+            <div id="settings" class="hidden">
+                <h2 class="text-xl font-semibold mb-4">Paramètres</h2>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <form>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Langue</label>
+                            <select class="w-full p-2 border rounded-lg">
+                                <option>Français</option>
+                                <option>Anglais</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notifications</label>
+                            <div class="flex items-center space-x-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox">
+                                    <span class="ml-2">Activer les notifications</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                            Enregistrer les paramètres
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Gestion de la navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetHref = this.getAttribute('href');
+
+                // Si le lien est "acceuil.html", laisser le navigateur suivre le lien
+                if (targetHref === 'acceuil.html') {
+                    return; // Ne pas empêcher le comportement par défaut
+                }
+
+                // Sinon, gérer la navigation interne
+                e.preventDefault();
+                const targetId = targetHref.substring(1);
+                document.querySelectorAll('main > div').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+
+        // Initialisation du calendrier
+        document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar-container');
+
+    if (calendarEl) {
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            locale: 'fr', // Utiliser le français
+            buttonText: {
+                today: "Aujourd'hui",
+                month: 'Mois',
+                week: 'Semaine',
+                day: 'Jour',
+            },
+            events: [
+                { title: 'Rendez-vous avec Aliman', date: '2025-02-15' },
+                { title: 'Rendez-vous avec Dominik', date: '2025-02-20' }
+            ],
+        });
+
+        calendar.render();
+    }
+});
+
+        // Gestion des publications
+        const openModalButton = document.getElementById('openModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const publicationModal = document.getElementById('publicationModal');
+        const publicationForm = document.getElementById('publicationForm');
+        const postsContainer = document.getElementById('postsContainer');
+
+        // Ouvrir le modal
+        openModalButton.addEventListener('click', () => {
+            publicationModal.classList.remove('hidden');
+        });
+
+        // Fermer le modal
+        closeModalButton.addEventListener('click', () => {
+            publicationModal.classList.add('hidden');
+        });
+
+        // Soumettre le formulaire de publication
+        publicationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('postTitle').value;
+            const description = document.getElementById('postDescription').value;
+            const imageFile = document.getElementById('postImage').files[0];
+
+            if (title && description && imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imageUrl = event.target.result;
+
+                    // Créer un nouvel objet de publication
+                    const newPost = {
+                        title,
+                        description,
+                        imageUrl,
+                        date: new Date().toLocaleDateString()
+                    };
+
+                    // Récupérer les publications existantes ou initialiser un tableau vide
+                    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+                    // Ajouter la nouvelle publication
+                    posts.push(newPost);
+
+                    // Sauvegarder dans le localStorage
+                    localStorage.setItem('posts', JSON.stringify(posts));
+
+                    // Ajouter la publication à l'affichage
+                    addPostToDOM(newPost);
+
+                    // Fermer le modal
+                    publicationModal.classList.add('hidden');
+
+                    // Réinitialiser le formulaire
+                    publicationForm.reset();
+                };
+                reader.readAsDataURL(imageFile);
+            }
+        });
+
+        // Ajouter une publication au DOM
+        function addPostToDOM(post) {
+            const postElement = document.createElement('div');
+            postElement.classList.add('bg-white', 'rounded-lg', 'shadow-sm', 'overflow-hidden', 'post-card');
+            postElement.innerHTML = `
+                <img src="${post.imageUrl}" alt="Réalisation" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold">${post.title}</h3>
+                        <span class="text-sm text-gray-500">${post.date}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">${post.description}</p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex space-x-4">
+                            <span class="flex items-center text-sm text-gray-500">
+                                <i class="far fa-heart mr-1"></i> 0
+                            </span>
+                            <span class="flex items-center text-sm text-gray-500">
+                                <i class="far fa-comment mr-1"></i> 0
+                            </span>
+                        </div>
+                        <button class="text-blue-600 hover:text-blue-700">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            postsContainer.prepend(postElement);
+        }
+
+        // Charger les publications existantes au chargement de la page
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.forEach(post => addPostToDOM(post));
+        }
+
+        // Charger les publications au chargement de la page
+        loadPosts();
+    </script>
+</body>
+</html>

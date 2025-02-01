@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - ArtisanCI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .message-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .message-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Barre de navigation -->
+    <nav class="bg-blue-600 shadow-md p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">ArtisanCI</h1>
+            <div class="space-x-6">
+                <a href="client.html" class="text-white font-semibold hover:underline">Accueil</a>
+                <a href="messages_client.html" class="text-white font-semibold hover:underline">Messages</a>
+                <a href="profil_client.html" class="text-white font-semibold hover:underline">Profil</a>
+                <a href="register.html" class="text-white font-semibold hover:underline">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mx-auto py-10 px-6">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">Messages</h2>
+
+        <!-- Liste des messages -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="space-y-4">
+                <!-- Message 1 -->
+                <div class="message-card bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-lg">Colonel Watao</h3>
+                            <p class="text-gray-600 text-sm">Bonjour, j'ai bien reçu votre demande...</p>
+                        </div>
+                        <span class="text-sm text-gray-500">10:45 AM</span>
+                    </div>
+                </div>
+
+                <!-- Message 2 -->
+                <div class="message-card bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-lg">Malick Dominique</h3>
+                            <p class="text-gray-600 text-sm">Votre projet est en cours de réalisation...</p>
+                        </div>
+                        <span class="text-sm text-gray-500">Hier</span>
+                    </div>
+                </div>
+
+                <!-- Ajoutez d'autres messages ici -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est authentifié
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!user || user.userType !== 'client') {
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            }
+        });
+
+        // Gérer la déconnexion
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.querySelector('a[href="connexion.html"]');
+
+            logoutButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('user'); // Supprimer les informations de l'utilisateur
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            });
+        });
+    </script>
+</body>
+</html>

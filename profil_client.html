@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - ArtisanCI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Barre de navigation -->
+    <nav class="bg-blue-600 shadow-md p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">ArtisanCI</h1>
+            <div class="space-x-6">
+                <a href="client.html" class="text-white font-semibold hover:underline">Accueil</a>
+                <a href="messages_client.html" class="text-white font-semibold hover:underline">Messages</a>
+                <a href="profil_client.html" class="text-white font-semibold hover:underline">Profil</a>
+                <a href="register.html" class="text-white font-semibold hover:underline">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mx-auto py-10 px-6">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">Profil</h2>
+
+        <!-- Formulaire de profil -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <form id="profile-form">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Nom</label>
+                    <input type="text" id="name" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Votre nom">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="exemple@email.com">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                    <input type="password" id="password" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Nouveau mot de passe">
+                </div>
+                <button type="submit" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md transition-transform transform hover:scale-105">Mettre à jour</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est authentifié
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!user || user.userType !== 'client') {
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            } else {
+                // Remplir les champs du formulaire avec les données de l'utilisateur
+                document.getElementById('name').value = user.name || '';
+                document.getElementById('email').value = user.email || '';
+            }
+        });
+
+        // Gérer la soumission du formulaire
+        document.getElementById('profile-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Mettre à jour les informations dans le localStorage
+            const user = JSON.parse(localStorage.getItem('user'));
+            user.name = name;
+            user.email = email;
+            if (password) user.password = password; // Mettre à jour le mot de passe si rempli
+
+            localStorage.setItem('user', JSON.stringify(user));
+            alert('Profil mis à jour avec succès !');
+        });
+
+        // Gérer la déconnexion
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.querySelector('a[href="connexion.html"]');
+
+            logoutButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('user'); // Supprimer les informations de l'utilisateur
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            });
+        });
+    </script>
+</body>
+</html>

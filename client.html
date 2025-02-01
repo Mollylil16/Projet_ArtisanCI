@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil Client - ArtisanCI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #3b82f6;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Barre de navigation -->
+    <nav class="bg-blue-600 shadow-md p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">ArtisanCI</h1>
+            <div class="space-x-6">
+                <a href="client.html" class="text-white font-semibold hover:underline">Accueil</a>
+                <a href="messages_client.html" class="text-white font-semibold hover:underline">Messages</a>
+                <a href="profil_client.html" class="text-white font-semibold hover:underline">Profil</a>
+                <a href="register.html" class="text-white font-semibold hover:underline">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mx-auto py-10 px-6">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">Catalogue des Réalisations</h2>
+
+        <!-- Barre de recherche et filtres -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-10">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="relative flex-1">
+                    <input type="text" id="searchInput" class="w-full p-3 pl-12 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Rechercher un artisan ou un service...">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+
+                <select id="domaineSelect" class="filter-btn">
+                    <option value="">Tous les types d'artisans</option>
+                    <option value="Menuiserie">Menuiserie</option>
+                    <option value="Plomberie">Plomberie</option>
+                    <option value="Electricien">Électricité</option>
+                    <option value="Maçonnerie">Maçonnerie</option>
+                    <option value="Peinture">Peinture</option>
+                    <option value="Jardinage">Jardinage</option>
+                </select>
+
+                <select id="localisationSelect" class="filter-btn">
+                    <option value="">Toutes les localisations</option>
+                    <option value="Abidjan">Abidjan</option>
+                    <option value="Yamoussoukro">Yamoussoukro</option>
+                    <option value="Bouaké">Bouaké</option>
+                    <option value="Daloa">Daloa</option>
+                    <option value="San-Pédro">San-Pédro</option>
+                </select>
+
+                <button id="searchButton" class="filter-btn bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+            </div>
+        </div>
+
+        <!-- Catalogue des réalisations -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="catalogue">
+            <!-- Les réalisations seront injectées ici dynamiquement -->
+        </div>
+    </div>
+
+    <!-- Script pour stocker les données des artisans dans le localStorage -->
+    <script>
+        const artisans = [
+            {
+                name: "Colonel Watao",
+                domaine: "Menuiserie",
+                localisation: "Abidjan",
+                realisations: [
+                    {
+                        title: "Table basse en chêne",
+                        description: "Table basse en chêne massif avec finition à l'huile naturelle.",
+                        image: "images/Table.webp"
+                    },
+                    {
+                        title: "Armoire en bois",
+                        description: "Armoire en bois massif avec portes coulissantes.",
+                        image: "images/armoire.jpg"
+                    }
+                ]
+            },
+            {
+                name: "Malick Dominique",
+                domaine: "Plomberie",
+                localisation: "Abidjan",
+                realisations: [
+                    {
+                        title: "Installation de salle de bain",
+                        description: "Installation complète d'une salle de bain moderne.",
+                        image: "images/douche-1.png"
+                    }
+                ]
+            },
+            {
+                name: "Vry Aka",
+                domaine: "Electricien",
+                localisation: "Abidjan",
+                realisations: [
+                    {
+                        title: "Maintenance",
+                        description: "Reglage de tout sorte de probleme concernant l'electricité",
+                        image: "images/electricien.webp"
+                    }
+                ]
+            },
+            {
+                name: "Kone Salim",
+                domaine: "Peinture",
+                localisation: "yamoussoukro",
+                realisations: [
+                    {
+                        title: "Excellent peintre",
+                        description: "Present pour apporter vie a votre maison a travers mon art.",
+                        image: "images/peinture.jpeg"
+                    }
+                ]
+            }
+        ];
+
+        // Stocker les données dans le localStorage
+        localStorage.setItem('artisans', JSON.stringify(artisans));
+    </script>
+
+    <!-- Script principal pour générer le catalogue -->
+    <script>
+        // Vérifier si l'utilisateur est authentifié
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!user || user.userType !== 'client') {
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            } else {
+                genererCatalogue(); // Générer le catalogue une fois la page chargée
+            }
+        });
+
+        // Gérer la déconnexion
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.querySelector('a[href="register.html"]');
+
+            logoutButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('user'); // Supprimer les informations de l'utilisateur
+                window.location.href = 'register.html'; // Rediriger vers la page de connexion
+            });
+        });
+
+        // Fonction pour générer le catalogue avec filtres
+        function genererCatalogue(searchText = '', domaine = '', localisation = '') {
+            const catalogue = document.getElementById('catalogue');
+            catalogue.innerHTML = ''; // Vider le contenu existant
+
+            // Récupérer les données des artisans depuis le localStorage
+            const artisans = JSON.parse(localStorage.getItem('artisans')) || [];
+
+            // Parcourir chaque artisan
+            artisans.forEach(artisan => {
+                // Filtrer par domaine et localisation
+                if ((domaine === '' || artisan.domaine === domaine) &&
+                    (localisation === '' || artisan.localisation === localisation)) {
+                    // Parcourir chaque réalisation de l'artisan
+                    artisan.realisations.forEach(realisation => {
+                        // Filtrer par texte de recherche
+                        if (realisation.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                            realisation.description.toLowerCase().includes(searchText.toLowerCase())) {
+                            // Créer une carte pour chaque réalisation
+                            const card = `
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden post-card">
+                                    <img src="${realisation.image}" alt="${realisation.title}" class="w-full h-56 object-cover">
+                                    <div class="p-5">
+                                        <h3 class="font-bold text-xl">${realisation.title}</h3>
+                                        <p class="text-gray-600 text-sm mt-2">${realisation.description}</p>
+                                        <div class="flex justify-between items-center mt-4">
+                                            <span class="text-sm text-gray-500">Par ${artisan.name}</span>
+                                            <button class="text-blue-600 hover:text-blue-800 font-semibold">Voir plus</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            catalogue.innerHTML += card; // Ajouter la carte au catalogue
+                        }
+                    });
+                }
+            });
+        }
+
+        // Ajouter des écouteurs d'événements pour la recherche et le filtrage
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const domaineSelect = document.getElementById('domaineSelect');
+            const localisationSelect = document.getElementById('localisationSelect');
+            const searchButton = document.getElementById('searchButton');
+
+            // Fonction pour lancer la recherche
+            const lancerRecherche = () => {
+                const searchText = searchInput.value;
+                const domaine = domaineSelect.value;
+                const localisation = localisationSelect.value;
+                genererCatalogue(searchText, domaine, localisation);
+            };
+
+            // Écouteur pour le bouton de recherche
+            searchButton.addEventListener('click', lancerRecherche);
+
+            // Écouteurs pour les changements de sélection
+            domaineSelect.addEventListener('change', lancerRecherche);
+            localisationSelect.addEventListener('change', lancerRecherche);
+
+            // Écouteur pour la barre de recherche (recherche en temps réel)
+            searchInput.addEventListener('input', lancerRecherche);
+        });
+    </script>
+</body>
+</html>
